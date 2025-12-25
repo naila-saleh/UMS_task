@@ -7,9 +7,16 @@ const getUser = async ()=>{
     return response.data;
 }
 const displayDetails =  async ()=>{
-    const user = await getUser();
-    document.querySelector('.user-name').textContent = user.data.name;
-    document.querySelector('.user-email').textContent = user.data.email;
-    document.querySelector('.user-age').textContent = user.data.age;
+    try {
+        const user = await getUser();
+        document.querySelector('.user-name').textContent = user.data.name;
+        document.querySelector('.user-email').textContent = user.data.email;
+        document.querySelector('.user-age').textContent = user.data.age;
+    }catch(error){
+        document.querySelector('.error-class').classList.remove('d-none');
+        document.querySelector('.error-msg').textContent = error.message;
+    }finally {
+        document.querySelector('.loader').classList.add('d-none');
+    }
 }
 displayDetails();

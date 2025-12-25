@@ -9,10 +9,17 @@ inputs.image.addEventListener('change',()=>{
 })
 inputs.addEventListener("submit",async (e)=>{
     e.preventDefault();
-    const formData = new FormData(inputs);
-    const response = await axios.post('https://ums12.runasp.net/api/users',formData);
-    if(response.status === 200){
-        location.href = './index.html';
+    try{
+        document.querySelector('.loader').classList.remove('d-none');
+        const formData = new FormData(inputs);
+        const response = await axios.post('https://ums12.runasp.net/api/users',formData);
+        if(response.status === 200){
+            location.href = './index.html';
+        }
+    }catch(error){
+        document.querySelector('.error-class').classList.remove('d-none');
+        document.querySelector('.error-msg').textContent = error.message;
+    }finally {
+        document.querySelector('.loader').classList.add('d-none');
     }
-    console.log(response);
 })
