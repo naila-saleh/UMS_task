@@ -9,9 +9,10 @@ const deleteUser = async (id)=>{
     alert(`User with id ${id} deleted`);
 }
 const displayUsers = async ()=>{
-    const data = await getUsers();
-    const users = data.users.map((user)=>{
-        return `
+    try{
+        const data = await getUsers();
+        const users = data.users.map((user)=>{
+            return `
         <tr>
             <th scope="row">${user.id}</th>
             <td>${user.name}</td>
@@ -20,9 +21,16 @@ const displayUsers = async ()=>{
             <td><img src="${user.imageUrl}" class="w-25"/></td>
             <td>
                 <button class="btn btn-outline-danger" onclick=deleteUser(${user.id})>Delete</button>
+                <a class="btn btn-outline-info" href="./details.html?userId=${user.id}">Details</a>
             </td>
         </tr>`
-    }).join('');
-    document.querySelector('.users-data').innerHTML = users;
+        }).join('');
+        document.querySelector('.users-data').innerHTML = users;
+    }catch(error){
+        document.querySelector('.error-class').classList.remove('d-none');
+        document.querySelector('.error-msg').textContent = error.message;
+    }finally {
+        document.querySelector('.loader').classList.add('d-none');
+    }
 }
 displayUsers()
